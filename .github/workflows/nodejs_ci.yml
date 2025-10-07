@@ -1,0 +1,33 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/server/**"
+      - ".github/workflows/**"
+  pull_request:
+    types: [opened, reopened]
+    branches: [main]
+    paths:
+      - "apps/server/**"
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v5
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "22.x"
+        cache: "npm"
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./apps/server
+
+    - name: Run Tests
+      run: npm test
+      working-directory: ./apps/server
